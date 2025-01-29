@@ -1,57 +1,62 @@
 [
     {
-        "salty-snacks": [
-            {
-                "name": "Doritos",
-                "price": 2.99
-            },
-            {
-                "name": "Lays",
-                "price": 1.99
-            },
-            {
-                "name": "Cheetos",
-                "price": 2.49
-            }
-        ]
-    }, {"sweet-snacks":[
-        {
-            "name": "Snickers",
-            "price": 1.49
-        },
-        {
-            "name": "Twix",
-            "price": 1.49
-        },
-        {
-            "name": "M&Ms",
-            "price": 1.99
-        }
-    ]}, {"vegetables":[
-        {
-            "name": "Carrots",
-            "price": 0.99
-        },
-        {
-            "name": "Celery",
-            "price": 1.49
-        },
-        {
-            "name": "Broccoli",
-            "price": 1.99
-        }
-    ]}, {"fruits":[
-        {
-            "name": "Apple",
-            "price": 0.99
-        },
-        {
-            "name": "Banana",
-            "price": 0.49
-        },
-        {
-            "name": "Orange",
-            "price": 0.79
-        }
-    ]}
+        "Category": "Salty Snacks",
+        "Name": "Doritos",
+        "Price": 2.99
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Lays",
+        "Price": 1.99
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Cheetos",
+        "Price": 2.49
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "Snickers",
+        "Price": 1.49
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "Twix",
+        "Price": 1.49
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "M&Ms",
+        "Price": 1.99
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Carrots",
+        "Price": 0.99
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Celery",
+        "Price": 1.49
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Broccoli",
+        "Price": 1.99
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Apple",
+        "Price": 0.99
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Banana",
+        "Price": 0.49
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Orange",
+        "Price": 0.79
+    }
 ]
