@@ -1,100 +1,131 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const dataContainer = document.getElementById("data-container");
+    const dataContainer = document.getElementById("data-container");
 
-  const jsonUrl = dataContainer.getAttribute("data-json-url");
-  const headers = dataContainer.getAttribute("data-headers");
+    if (!dataContainer) {
+        console.error("Error: #data-container not found.");
+        return;
+    }
 
-  if (!jsonUrl || !headers) {
-    console.error("Missing data-json-url or data-headers attribute.");
-    dataContainer.textContent = "No data available.";
-    return;
-  }
+    // Get JSON URL & Headers
+    const jsonUrl = dataContainer.getAttribute("data-json-url");
+    const headers = dataContainer.getAttribute("data-headers");
 
-  const headerArray = headers.split(",").map(header => header.trim());
+    if (!jsonUrl || !headers) {
+        console.error("Missing required data attributes.");
+        dataContainer.textContent = "Error: No data URL or headers specified.";
+        return;
+    }
 
-  fetch(jsonUrl)
-    .then(response => response.json())
-    .then(data => {
-      // Create Table
-      const table = document.createElement("table");
-      table.classList.add("table", "table-striped", "sortable-table");
+    const headerArray = headers.split(",").map(header => header.trim());
 
-      // Create Table Header
-      const thead = document.createElement("thead");
-      const headerRow = document.createElement("tr");
+    // Create the table structure
+    const table = document.createElement("table");
+    table.classList.add("table", "table-striped", "table-bordered", "table-hover", "w-100"); // Bootstrap table styles
 
-      headerArray.forEach((headerText, index) => {
+    // Create table caption for accessibility
+    const caption = document.createElement("caption");
+    caption.innerHTML = `Sortable Table <span class="sr-only"> (Use headings to sort columns) </span>`;
+    table.appendChild(caption);
+
+    // Create table header
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+
+    headerArray.forEach((headerText, index) => {
         const th = document.createElement("th");
-        th.setAttribute("scope", "col");
+        th.scope = "col";
+        th.classList.add("text-start", "fw-bold"); // Bootstrap text alignment & bold header
 
-        // Create a button inside the <th> for keyboard and screen reader support
+        // Create button for sorting
         const button = document.createElement("button");
-        button.classList.add("sort-btn");
-        button.setAttribute("type", "button");
-        button.setAttribute("tabindex", "0");
-        button.setAttribute("aria-label", `Sort by ${headerText}`);
+        button.textContent = headerText;
         button.setAttribute("data-column-index", index);
-        button.innerHTML = `${headerText} <span class="sort-indicator" aria-hidden="true">⬍</span>`;
-
-        // Add Click & Keydown Event for Sorting
-        button.addEventListener("click", () => sortTable(index, button));
-        button.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            sortTable(index, button);
-          }
-        });
+        button.setAttribute("aria-sort", "none");
+        button.setAttribute("aria-label", `Sort by ${headerText}`);
+        button.classList.add("sort-btn");
 
         th.appendChild(button);
         headerRow.appendChild(th);
-      });
+    });
 
-      thead.appendChild(headerRow);
-      table.appendChild(thead);
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
 
-      // Create Table Body
-      const tbody = document.createElement("tbody");
+    // Create the table body
+    const tbody = document.createElement("tbody");
+    table.appendChild(tbody);
 
-      data.forEach(item => {
-        const row = document.createElement("tr");
+    // Fetch JSON data
+    fetch(jsonUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Populate rows from JSON data
+            data.forEach(item => {
+                const row = document.createElement("tr");
 
-        headerArray.forEach(headerKey => {
-          const td = document.createElement("td");
-          td.textContent = item[headerKey] || "N/A";
-          row.appendChild(td);
+                headerArray.forEach(headerKey => {
+                    const td = document.createElement("td");
+                    td.textContent = item[headerKey] || "N/A";
+                    row.appendChild(td);
+                });
+
+                tbody.appendChild(row);
+            });
+
+            // Append the table to the container
+            dataContainer.appendChild(table);
+
+            // Initialize sorting functionality
+            initializeSorting();
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+            dataContainer.textContent = "Failed to load data.";
         });
 
-        tbody.appendChild(row);
-      });
+    function initializeSorting() {
+        document.querySelectorAll(".sort-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const columnIndex = this.dataset.columnIndex;
+                const currentSort = this.getAttribute("aria-sort");
+                let newSort = "ascending";
 
-      table.appendChild(tbody);
-      dataContainer.appendChild(table);
-    })
-    .catch(error => {
-      console.error("Error fetching data:", error);
-      dataContainer.textContent = "Failed to load data.";
-    });
+                if (currentSort === "ascending") {
+                    newSort = "descending";
+                } else if (currentSort === "descending") {
+                    newSort = "none";
+                }
 
-  // Sorting Function
-  function sortTable(columnIndex, button) {
-    const table = document.querySelector(".sortable-table tbody");
-    const rows = Array.from(table.querySelectorAll("tr"));
+                this.setAttribute("aria-sort", newSort);
+                sortTable(columnIndex, newSort);
+            });
 
-    const isAscending = table.dataset.order === "asc";
-    table.dataset.order = isAscending ? "desc" : "asc";
+            button.addEventListener("keydown", function (event) {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    this.click();
+                }
+            });
+        });
+    }
 
-    // Update ARIA attributes & indicator
-    button.setAttribute("aria-sort", isAscending ? "ascending" : "descending");
-    button.querySelector(".sort-indicator").textContent = isAscending ? "⬆" : "⬇";
+    function sortTable(columnIndex, order) {
+        const rows = Array.from(tbody.rows);
+        let sortedRows;
 
-    rows.sort((rowA, rowB) => {
-      const cellA = rowA.cells[columnIndex].textContent.trim();
-      const cellB = rowB.cells[columnIndex].textContent.trim();
+        if (order === "ascending") {
+            sortedRows = rows.sort((a, b) =>
+                a.cells[columnIndex].textContent.localeCompare(b.cells[columnIndex].textContent, undefined, { numeric: true })
+            );
+        } else if (order === "descending") {
+            sortedRows = rows.sort((a, b) =>
+                b.cells[columnIndex].textContent.localeCompare(a.cells[columnIndex].textContent, undefined, { numeric: true })
+            );
+        } else {
+            return;
+        }
 
-      return isAscending
-        ? cellA.localeCompare(cellB, undefined, { numeric: true })
-        : cellB.localeCompare(cellA, undefined, { numeric: true });
-    });
-
-    rows.forEach(row => table.appendChild(row));
-  }
+        tbody.innerHTML = "";
+        sortedRows.forEach(row => tbody.appendChild(row));
+    }
 });

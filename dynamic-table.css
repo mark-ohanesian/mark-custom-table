@@ -1,29 +1,43 @@
-/* Sortable Button Styling */
-.sort-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: inherit;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 5px;
+/* General Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-/* Sort Indicator (⬍ by default, ⬆ or ⬇ when sorted) */
-.sort-indicator {
-    font-size: 12px;
+/* Remove default button styles for sorting buttons */
+th button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    padding: 8px;
+    color: inherit;
+}
+
+/* Sorting Icons */
+th[aria-sort="ascending"] button::after {
+    content: " ▲";
     color: gray;
 }
 
-/* Focus Outline for Accessibility */
-.sort-btn:focus {
-    outline: 3px solid #007bff;
-    border-radius: 4px;
+th[aria-sort="descending"] button::after {
+    content: " ▼";
+    color: gray;
 }
 
-/* Hover Effect */
-.sort-btn:hover {
-    color: #007bff;
+th[aria-sort="none"] button::after {
+    content: " ⬍";
+    color: gray;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 }
