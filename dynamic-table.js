@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(data => {
       // Create Table
       const table = document.createElement("table");
-      table.classList.add("table", "table-striped", "sortable-table"); // Bootstrap + Custom Class
+      table.classList.add("table", "table-striped", "sortable-table");
 
       // Create Table Header
       const thead = document.createElement("thead");
@@ -25,13 +25,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
       headerArray.forEach((headerText, index) => {
         const th = document.createElement("th");
-        th.textContent = headerText;
         th.setAttribute("scope", "col");
-        th.classList.add("sortable");
 
-        // Add Click Event for Sorting
-        th.addEventListener("click", () => sortTable(index));
+        // Create a button inside the <th> for keyboard and screen reader support
+        const button = document.createElement("button");
+        button.classList.add("sort-btn");
+        button.setAttribute("type", "button");
+        button.setAttribute("tabindex", "0");
+        button.setAttribute("aria-label", `Sort by ${headerText}`);
+        button.setAttribute("data-column-index", index);
+        button.innerHTML = `${headerText} <span class="sort-indicator" aria-hidden="true">⬍</span>`;
 
+        // Add Click & Keydown Event for Sorting
+        button.addEventListener("click", () => sortTable(index, button));
+        button.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            sortTable(index, button);
+          }
+        });
+
+        th.appendChild(button);
         headerRow.appendChild(th);
       });
 
@@ -55,15 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       table.appendChild(tbody);
       dataContainer.appendChild(table);
-
-      // Add Filter Input
-      const filterInput = document.createElement("input");
-      filterInput.setAttribute("type", "text");
-      filterInput.setAttribute("placeholder", "Filter results...");
-      filterInput.classList.add("table-filter");
-      filterInput.addEventListener("keyup", () => filterTable());
-
-      dataContainer.insertBefore(filterInput, table);
     })
     .catch(error => {
       console.error("Error fetching data:", error);
@@ -71,12 +75,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   // Sorting Function
-  function sortTable(columnIndex) {
+  function sortTable(columnIndex, button) {
     const table = document.querySelector(".sortable-table tbody");
     const rows = Array.from(table.querySelectorAll("tr"));
 
     const isAscending = table.dataset.order === "asc";
     table.dataset.order = isAscending ? "desc" : "asc";
+
+    // Update ARIA attributes & indicator
+    button.setAttribute("aria-sort", isAscending ? "ascending" : "descending");
+    button.querySelector(".sort-indicator").textContent = isAscending ? "⬆" : "⬇";
 
     rows.sort((rowA, rowB) => {
       const cellA = rowA.cells[columnIndex].textContent.trim();
@@ -88,17 +96,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     rows.forEach(row => table.appendChild(row));
-  }
-
-  // Filtering Function
-  function filterTable() {
-    const input = document.querySelector(".table-filter");
-    const filter = input.value.toLowerCase();
-    const rows = document.querySelectorAll(".sortable-table tbody tr");
-
-    rows.forEach(row => {
-      const text = row.textContent.toLowerCase();
-      row.style.display = text.includes(filter) ? "" : "none";
-    });
   }
 });
