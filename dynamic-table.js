@@ -1,79 +1,104 @@
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded');
-    const dataContainer = document.getElementById('data-container');
+document.addEventListener("DOMContentLoaded", () => {
+  const dataContainer = document.getElementById("data-container");
 
-    // Get the JSON URL from the `data-json-url` attribute
-    const jsonUrl = dataContainer.getAttribute('data-json-url');
-    const headers = dataContainer.getAttribute('data-headers');
+  const jsonUrl = dataContainer.getAttribute("data-json-url");
+  const headers = dataContainer.getAttribute("data-headers");
 
-    if (!jsonUrl) {
-        console.error('No JSON URL specified in data-json-url attribute.');
-        dataContainer.textContent = 'No data URL specified.';
-        return;
-    }
+  if (!jsonUrl || !headers) {
+    console.error("Missing data-json-url or data-headers attribute.");
+    dataContainer.textContent = "No data available.";
+    return;
+  }
 
-    if (!headers) {
-        console.error('No headers specified in data-headers attribute.');
-        dataContainer.textContent = 'No headers specified.';
-        return;
-    }
+  const headerArray = headers.split(",").map(header => header.trim());
 
-    // Parse the headers from the data-headers attribute
-    const headerArray = headers.split(',').map(header => header.trim());
+  fetch(jsonUrl)
+    .then(response => response.json())
+    .then(data => {
+      // Create Table
+      const table = document.createElement("table");
+      table.classList.add("table", "table-striped", "sortable-table"); // Bootstrap + Custom Class
 
-    // Clear the container in case of old content
-    dataContainer.innerHTML = '';
+      // Create Table Header
+      const thead = document.createElement("thead");
+      const headerRow = document.createElement("tr");
 
-    // Fetch the JSON data
-    fetch(jsonUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Create the table element
-            const table = document.createElement('table');
-            table.classList.add('table', 'table-striped'); // Add state template classes
+      headerArray.forEach((headerText, index) => {
+        const th = document.createElement("th");
+        th.textContent = headerText;
+        th.setAttribute("scope", "col");
+        th.classList.add("sortable");
 
-            // Create table headers dynamically
-            const thead = document.createElement('thead');
-            const headerRow = document.createElement('tr');
+        // Add Click Event for Sorting
+        th.addEventListener("click", () => sortTable(index));
 
-            headerArray.forEach(headerText => {
-                const th = document.createElement('th');
-                th.setAttribute('scope', 'col');
-                th.textContent = headerText;
-                headerRow.appendChild(th);
-            });
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
+        headerRow.appendChild(th);
+      });
 
-            // Create the table body
-            const tbody = document.createElement('tbody');
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
 
-            // Populate rows from JSON data
-            data.forEach(item => {
-                const row = document.createElement('tr');
+      // Create Table Body
+      const tbody = document.createElement("tbody");
 
-                // Add cells based on the specified headers
-                headerArray.forEach(headerKey => {
-                    const td = document.createElement('td');
-                    td.textContent = item[headerKey] || 'N/A'; // Match key from JSON, or use 'N/A' if missing
-                    row.appendChild(td);
-                });
+      data.forEach(item => {
+        const row = document.createElement("tr");
 
-                tbody.appendChild(row);
-            });
-
-            table.appendChild(tbody);
-
-            // Append the table to the container
-            dataContainer.appendChild(table);
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-            dataContainer.textContent = 'Failed to load data.';
+        headerArray.forEach(headerKey => {
+          const td = document.createElement("td");
+          td.textContent = item[headerKey] || "N/A";
+          row.appendChild(td);
         });
+
+        tbody.appendChild(row);
+      });
+
+      table.appendChild(tbody);
+      dataContainer.appendChild(table);
+
+      // Add Filter Input
+      const filterInput = document.createElement("input");
+      filterInput.setAttribute("type", "text");
+      filterInput.setAttribute("placeholder", "Filter results...");
+      filterInput.classList.add("table-filter");
+      filterInput.addEventListener("keyup", () => filterTable());
+
+      dataContainer.insertBefore(filterInput, table);
+    })
+    .catch(error => {
+      console.error("Error fetching data:", error);
+      dataContainer.textContent = "Failed to load data.";
+    });
+
+  // Sorting Function
+  function sortTable(columnIndex) {
+    const table = document.querySelector(".sortable-table tbody");
+    const rows = Array.from(table.querySelectorAll("tr"));
+
+    const isAscending = table.dataset.order === "asc";
+    table.dataset.order = isAscending ? "desc" : "asc";
+
+    rows.sort((rowA, rowB) => {
+      const cellA = rowA.cells[columnIndex].textContent.trim();
+      const cellB = rowB.cells[columnIndex].textContent.trim();
+
+      return isAscending
+        ? cellA.localeCompare(cellB, undefined, { numeric: true })
+        : cellB.localeCompare(cellA, undefined, { numeric: true });
+    });
+
+    rows.forEach(row => table.appendChild(row));
+  }
+
+  // Filtering Function
+  function filterTable() {
+    const input = document.querySelector(".table-filter");
+    const filter = input.value.toLowerCase();
+    const rows = document.querySelectorAll(".sortable-table tbody tr");
+
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(filter) ? "" : "none";
+    });
+  }
 });
