@@ -1,0 +1,57 @@
+[
+    {
+        "salty-snacks": [
+            {
+                "name": "Doritos",
+                "price": 2.99
+            },
+            {
+                "name": "Lays",
+                "price": 1.99
+            },
+            {
+                "name": "Cheetos",
+                "price": 2.49
+            }
+        ]
+    }, {"sweet-snacks":[
+        {
+            "name": "Snickers",
+            "price": 1.49
+        },
+        {
+            "name": "Twix",
+            "price": 1.49
+        },
+        {
+            "name": "M&Ms",
+            "price": 1.99
+        }
+    ]}, {"vegetables":[
+        {
+            "name": "Carrots",
+            "price": 0.99
+        },
+        {
+            "name": "Celery",
+            "price": 1.49
+        },
+        {
+            "name": "Broccoli",
+            "price": 1.99
+        }
+    ]}, {"fruits":[
+        {
+            "name": "Apple",
+            "price": 0.99
+        },
+        {
+            "name": "Banana",
+            "price": 0.49
+        },
+        {
+            "name": "Orange",
+            "price": 0.79
+        }
+    ]}
+]
