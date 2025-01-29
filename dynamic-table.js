@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded');
     const dataContainer = document.getElementById('data-container');
 
     // Get the JSON URL from the `data-json-url` attribute
