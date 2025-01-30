@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderTable(data, headers) {
         dataContainer.innerHTML = '';
 
+        const tableWrapper = document.createElement('div');
+        tableWrapper.classList.add('table-responsive');
+
         const table = document.createElement('table');
         table.classList.add('table', 'table-striped', 'sortable');
         table.setAttribute('id', 'dynamic-table');
@@ -60,11 +63,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         table.appendChild(tbody);
-        dataContainer.appendChild(table);
+        tableWrapper.appendChild(table);
+        dataContainer.appendChild(tableWrapper);
+
+        // Pagination UI
+        const paginationWrapper = document.createElement('div');
+        paginationWrapper.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'mt-3');
+
+        // Entries info text
+        const entriesInfo = document.createElement('div');
+        entriesInfo.id = 'entries-info';
+        entriesInfo.textContent = 'Showing 1 to 10 of ' + data.length + ' entries';
+
+        // Pagination controls
+        const paginationControls = document.createElement('div');
+        paginationControls.id = 'pagination-controls';
+        paginationControls.classList.add('pagination');
+
+        paginationWrapper.appendChild(entriesInfo);
+        paginationWrapper.appendChild(paginationControls);
+        dataContainer.appendChild(paginationWrapper);
 
         // Enable search and pagination
         setupSearch();
-        setupPagination();
+        setupPagination(data, headers);
     }
 
     // 🔹 Search Functionality
@@ -82,17 +104,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 🔹 Pagination Functionality
-    function setupPagination() {
+    function setupPagination(data, headers) {
         const table = document.getElementById('dynamic-table');
         const tbody = table.querySelector('tbody');
         const rows = Array.from(tbody.querySelectorAll('tr'));
         const dropdown = document.getElementById('dt-length-0');
+        const paginationControls = document.getElementById('pagination-controls');
+        const entriesInfo = document.getElementById('entries-info');
+
+        let pageSize = parseInt(dropdown.value);
+        let currentPage = 1;
+        let totalPages = Math.ceil(rows.length / pageSize);
 
         function paginate() {
-            const pageSize = parseInt(dropdown.value);
-            rows.forEach((row, index) => {
-                row.style.display = index < pageSize ? '' : 'none';
-            });
+            pageSize = parseInt(dropdown.value);
+            totalPages = Math.ceil(rows.length / pageSize);
+            updatePagination();
+        }
+
+        function updatePagination() {
+            tbody.innerHTML = '';
+
+            const start = (currentPage - 1) * pageSize;
+            const end = start + pageSize;
+
+            rows.slice(start, end).forEach(row => tbody.appendChild(row));
+
+            entriesInfo.textContent = `Showing ${start + 1} to ${Math.min(end, rows.length)} of ${rows.length} entries`;
+            updatePaginationControls();
+        }
+
+        function updatePaginationControls() {
+            paginationControls.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.classList.add('page-item', 'btn', 'btn-light');
+                pageBtn.textContent = i;
+                pageBtn.setAttribute('aria-label', `Go to page ${i}`);
+
+                if (i === currentPage) {
+                    pageBtn.classList.add('active');
+                    pageBtn.setAttribute('aria-current', 'page');
+                }
+
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    updatePagination();
+                });
+
+                paginationControls.appendChild(pageBtn);
+            }
         }
 
         dropdown.addEventListener('change', paginate);
