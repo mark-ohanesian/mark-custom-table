@@ -12,16 +12,34 @@
   </head>
   <body>
     <div class="container my-4">
-      <!-- Search Bar (Right-Aligned, Label & Input Centered) -->
-      <div class="d-flex justify-content-end align-items-center mb-2">
-        <label for="dt-search-0" class="fw-bold me-2 mb-0">Search:</label>
-        <input
-          type="search"
-          class="dt-input"
-          id="dt-search-0"
-          placeholder="Search table..."
-          aria-controls="dynamic-table"
-        />
+      <!-- Table Controls: Dropdown (Left) & Search Bar (Right) -->
+      <div
+        class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3"
+      >
+        <!-- Entries Per Page Dropdown -->
+        <div class="d-flex align-items-center gap-2">
+          <label for="dt-length-0" class="fw-bold">Show:</label>
+          <select id="dt-length-0" class="dt-input">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <span>entries per page</span>
+          <!-- Ensures "entries per page" stays inline -->
+        </div>
+
+        <!-- Search Bar -->
+        <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+          <label for="dt-search-0" class="fw-bold">Search:</label>
+          <input
+            type="search"
+            class="dt-input"
+            id="dt-search-0"
+            placeholder="Search table..."
+            aria-controls="dynamic-table"
+          />
+        </div>
       </div>
 
       <!-- Table Container -->
