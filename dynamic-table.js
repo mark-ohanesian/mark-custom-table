@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Table Body
         const tbody = document.createElement('tbody');
+
         data.forEach(item => {
             const row = document.createElement('tr');
             headers.forEach(headerKey => {
@@ -73,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Entries info text
         const entriesInfo = document.createElement('div');
         entriesInfo.id = 'entries-info';
-        entriesInfo.textContent = 'Showing 1 to 10 of ' + data.length + ' entries';
+        entriesInfo.textContent = `Showing 1 to 10 of ${data.length} entries`;
 
         // Pagination controls
         const paginationControls = document.createElement('div');
@@ -100,6 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const text = row.textContent.toLowerCase();
                 row.style.display = text.includes(filter) ? '' : 'none';
             });
+
+            // Ensure pagination updates after filtering
+            setupPagination([...document.querySelectorAll('#dynamic-table tbody tr')], headerArray);
         });
     }
 
@@ -114,11 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let pageSize = parseInt(dropdown.value);
         let currentPage = 1;
-        let totalPages = Math.ceil(rows.length / pageSize);
+        let totalPages = Math.ceil(data.length / pageSize);
 
         function paginate() {
             pageSize = parseInt(dropdown.value);
-            totalPages = Math.ceil(rows.length / pageSize);
+            totalPages = Math.ceil(data.length / pageSize);
             updatePagination();
         }
 
@@ -128,9 +132,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const start = (currentPage - 1) * pageSize;
             const end = start + pageSize;
 
-            rows.slice(start, end).forEach(row => tbody.appendChild(row));
+            data.slice(start, end).forEach(item => {
+                const row = document.createElement('tr');
+                headers.forEach(headerKey => {
+                    const td = document.createElement('td');
+                    td.textContent = item[headerKey] || 'N/A';
+                    row.appendChild(td);
+                });
+                tbody.appendChild(row);
+            });
 
-            entriesInfo.textContent = `Showing ${start + 1} to ${Math.min(end, rows.length)} of ${rows.length} entries`;
+            entriesInfo.textContent = `Showing ${start + 1} to ${Math.min(end, data.length)} of ${data.length} entries`;
             updatePaginationControls();
         }
 
@@ -177,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return isAscending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
         });
 
+        tbody.innerHTML = '';
         rows.forEach(row => tbody.appendChild(row));
     }
 });
