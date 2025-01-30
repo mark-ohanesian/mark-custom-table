@@ -73,5 +73,305 @@
         "Category": "High-Protein Snacks",
         "Name": "Greek Yogurt",
         "Price": 1.99
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Pretzels",
+        "Price": 1.99
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Popcorn",
+        "Price": 2.49
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Potato Chips",
+        "Price": 2.99
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "KitKat",
+        "Price": 1.49
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "Milky Way",
+        "Price": 1.49
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "Hershey's",
+        "Price": 1.99
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Cucumber",
+        "Price": 0.99
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Tomato",
+        "Price": 1.49
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Spinach",
+        "Price": 1.99
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Grapes",
+        "Price": 2.99
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Strawberry",
+        "Price": 3.49
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Blueberry",
+        "Price": 3.99
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Almonds",
+        "Price": 4.99
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Cashews",
+        "Price": 5.49
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Walnuts",
+        "Price": 6.99
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Chex Mix",
+        "Price": 2.99
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Sun Chips",
+        "Price": 2.49
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Pringles",
+        "Price": 1.99
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "Reese's",
+        "Price": 1.49
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "Butterfinger",
+        "Price": 1.49
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "3 Musketeers",
+        "Price": 1.99
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Bell Pepper",
+        "Price": 0.99
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Lettuce",
+        "Price": 1.49
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Kale",
+        "Price": 1.99
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Pineapple",
+        "Price": 2.99
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Mango",
+        "Price": 1.49
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Peach",
+        "Price": 1.99
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Pistachios",
+        "Price": 4.99
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Pumpkin Seeds",
+        "Price": 5.49
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Sunflower Seeds",
+        "Price": 6.99
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Tortilla Chips",
+        "Price": 2.99
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Ritz Crackers",
+        "Price": 2.49
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Goldfish",
+        "Price": 1.99
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "Twizzlers",
+        "Price": 1.49
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "Skittles",
+        "Price": 1.49
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "Starburst",
+        "Price": 1.99
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Zucchini",
+        "Price": 0.99
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Eggplant",
+        "Price": 1.49
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Cauliflower",
+        "Price": 1.99
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Watermelon",
+        "Price": 2.99
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Kiwi",
+        "Price": 1.49
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Papaya",
+        "Price": 1.99
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Chia Seeds",
+        "Price": 4.99
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Hemp Seeds",
+        "Price": 5.49
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Quinoa",
+        "Price": 6.99
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Veggie Straws",
+        "Price": 2.99
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Pita Chips",
+        "Price": 2.49
+    },
+    {
+        "Category": "Salty Snacks",
+        "Name": "Rice Cakes",
+        "Price": 1.99
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "Gummy Bears",
+        "Price": 1.49
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "Jelly Beans",
+        "Price": 1.49
+    },
+    {
+        "Category": "Sweet Snacks",
+        "Name": "Marshmallows",
+        "Price": 1.99
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Radish",
+        "Price": 0.99
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Beetroot",
+        "Price": 1.49
+    },
+    {
+        "Category": "Vegetables",
+        "Name": "Asparagus",
+        "Price": 1.99
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Pear",
+        "Price": 2.99
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Plum",
+        "Price": 1.49
+    },
+    {
+        "Category": "Fruits",
+        "Name": "Cherry",
+        "Price": 1.99
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Edamame",
+        "Price": 4.99
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Tofu",
+        "Price": 5.49
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Tempeh",
+        "Price": 6.99
     }
 ]
