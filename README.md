@@ -6,17 +6,18 @@ This project provides a dynamic, accessible table that fetches JSON data and ren
 
 ## **Features**
 
-✅ Fetches JSON data dynamically from a provided URL.  
-✅ Uses Bootstrap styling for a clean, responsive table.  
-✅ Provides accessible column sorting via keyboard and screen readers.  
-✅ Modular implementation for easy reuse across multiple tables.
+- Built with accessibility-first methodology to **[World Wide Web Consortium (W3C) guidelines](https://www.w3.org/WAI/ARIA/apg/patterns/table/examples/sortable-table/)**
+- Fetches JSON data dynamically from a provided URL.  
+- Uses Bootstrap styling for a clean, responsive table.  
+- Provides accessible column sorting via keyboard and screen readers.  
+- Modular implementation for easy reuse across multiple tables.
 
 ---
 
 ## **Live Demo**
 
 You can view the deployed project here:  
-👉 **[GitHub Pages URL](https://your-username.github.io/dynamic-table/)** _(Replace with actual URL after deployment.)_
+👉 **[GitHub Pages URL](https://mark-ohanesian.github.io/dynamic-modular-table/)** _(Replace with actual URL after deployment.)_
 
 ---
 
