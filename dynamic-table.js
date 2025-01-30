@@ -9,12 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // 🔹 Define `headerArray` BEFORE using it
     const headerArray = headers.split(',').map(header => header.trim());
+
+    let originalData = []; // Store original unfiltered data
+    let filteredData = []; // Store search-filtered data
+    let currentPage = 1;
+    let pageSize = 10;
 
     fetch(jsonUrl)
         .then(response => response.json())
         .then(data => {
-            renderTable(data, headerArray);
+            originalData = data;
+            filteredData = [...originalData]; // Start with full data
+            renderTable(filteredData, headerArray);
         })
         .catch(error => {
             console.error('Error fetching data:', error);
@@ -52,17 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Table Body
         const tbody = document.createElement('tbody');
-
-        data.forEach(item => {
-            const row = document.createElement('tr');
-            headers.forEach(headerKey => {
-                const td = document.createElement('td');
-                td.textContent = item[headerKey] || 'N/A';
-                row.appendChild(td);
-            });
-            tbody.appendChild(row);
-        });
-
         table.appendChild(tbody);
         tableWrapper.appendChild(table);
         dataContainer.appendChild(tableWrapper);
@@ -74,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Entries info text
         const entriesInfo = document.createElement('div');
         entriesInfo.id = 'entries-info';
-        entriesInfo.textContent = `Showing 1 to 10 of ${data.length} entries`;
 
         // Pagination controls
         const paginationControls = document.createElement('div');
@@ -85,111 +81,107 @@ document.addEventListener('DOMContentLoaded', () => {
         paginationWrapper.appendChild(paginationControls);
         dataContainer.appendChild(paginationWrapper);
 
-        // Enable search and pagination
         setupSearch();
-        setupPagination(data, headers);
+        setupPagination();
+        updateTable();
     }
 
     // 🔹 Search Functionality
     function setupSearch() {
         const searchInput = document.getElementById('dt-search-0');
+
         searchInput.addEventListener('input', function () {
             const filter = searchInput.value.toLowerCase();
-            const rows = document.querySelectorAll('#dynamic-table tbody tr');
 
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(filter) ? '' : 'none';
-            });
+            // Filter data based on search
+            filteredData = originalData.filter(item =>
+                Object.values(item).some(value =>
+                    String(value).toLowerCase().includes(filter)
+                )
+            );
 
-            // Ensure pagination updates after filtering
-            setupPagination([...document.querySelectorAll('#dynamic-table tbody tr')], headerArray);
+            // Reset to page 1 after filtering
+            currentPage = 1;
+            updateTable();
         });
     }
 
     // 🔹 Pagination Functionality
-    function setupPagination(data, headers) {
+    function setupPagination() {
+        const dropdown = document.getElementById('dt-length-0');
+        dropdown.addEventListener('change', function () {
+            pageSize = parseInt(dropdown.value);
+            currentPage = 1; // Reset to first page
+            updateTable();
+        });
+    }
+
+    function updateTable() {
         const table = document.getElementById('dynamic-table');
         const tbody = table.querySelector('tbody');
-        const rows = Array.from(tbody.querySelectorAll('tr'));
-        const dropdown = document.getElementById('dt-length-0');
         const paginationControls = document.getElementById('pagination-controls');
         const entriesInfo = document.getElementById('entries-info');
 
-        let pageSize = parseInt(dropdown.value);
-        let currentPage = 1;
-        let totalPages = Math.ceil(data.length / pageSize);
+        tbody.innerHTML = '';
 
-        function paginate() {
-            pageSize = parseInt(dropdown.value);
-            totalPages = Math.ceil(data.length / pageSize);
-            updatePagination();
-        }
+        const start = (currentPage - 1) * pageSize;
+        const end = start + pageSize;
+        const paginatedData = filteredData.slice(start, end);
 
-        function updatePagination() {
-            tbody.innerHTML = '';
+        paginatedData.forEach(item => {
+            const row = document.createElement('tr');
+            headerArray.forEach(headerKey => {
+                const td = document.createElement('td');
+                td.textContent = item[headerKey] || 'N/A';
+                row.appendChild(td);
+            });
+            tbody.appendChild(row);
+        });
 
-            const start = (currentPage - 1) * pageSize;
-            const end = start + pageSize;
+        entriesInfo.textContent = `Showing ${start + 1} to ${Math.min(end, filteredData.length)} of ${filteredData.length} entries`;
+        updatePaginationControls();
+    }
 
-            data.slice(start, end).forEach(item => {
-                const row = document.createElement('tr');
-                headers.forEach(headerKey => {
-                    const td = document.createElement('td');
-                    td.textContent = item[headerKey] || 'N/A';
-                    row.appendChild(td);
-                });
-                tbody.appendChild(row);
+    function updatePaginationControls() {
+        const paginationControls = document.getElementById('pagination-controls');
+        paginationControls.innerHTML = '';
+
+        const totalPages = Math.ceil(filteredData.length / pageSize);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.classList.add('page-item', 'btn', 'btn-light');
+            pageBtn.textContent = i;
+            pageBtn.setAttribute('aria-label', `Go to page ${i}`);
+
+            if (i === currentPage) {
+                pageBtn.classList.add('active');
+                pageBtn.setAttribute('aria-current', 'page');
+            }
+
+            pageBtn.addEventListener('click', () => {
+                currentPage = i;
+                updateTable();
             });
 
-            entriesInfo.textContent = `Showing ${start + 1} to ${Math.min(end, data.length)} of ${data.length} entries`;
-            updatePaginationControls();
+            paginationControls.appendChild(pageBtn);
         }
-
-        function updatePaginationControls() {
-            paginationControls.innerHTML = '';
-
-            for (let i = 1; i <= totalPages; i++) {
-                const pageBtn = document.createElement('button');
-                pageBtn.classList.add('page-item', 'btn', 'btn-light');
-                pageBtn.textContent = i;
-                pageBtn.setAttribute('aria-label', `Go to page ${i}`);
-
-                if (i === currentPage) {
-                    pageBtn.classList.add('active');
-                    pageBtn.setAttribute('aria-current', 'page');
-                }
-
-                pageBtn.addEventListener('click', () => {
-                    currentPage = i;
-                    updatePagination();
-                });
-
-                paginationControls.appendChild(pageBtn);
-            }
-        }
-
-        dropdown.addEventListener('change', paginate);
-        paginate(); // Initial pagination
     }
 
     // 🔹 Sorting Functionality
     function sortTable(columnIndex) {
-        const table = document.getElementById('dynamic-table');
-        const tbody = table.querySelector('tbody');
-        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const isAscending = dataContainer.dataset.sortOrder !== 'asc';
+        dataContainer.dataset.sortOrder = isAscending ? 'asc' : 'desc';
 
-        const isAscending = table.dataset.sortOrder !== 'asc';
-        table.dataset.sortOrder = isAscending ? 'asc' : 'desc';
+        filteredData.sort((a, b) => {
+            const cellA = a[headerArray[columnIndex]] || "";
+            const cellB = b[headerArray[columnIndex]] || "";
 
-        rows.sort((rowA, rowB) => {
-            const cellA = rowA.cells[columnIndex].textContent.trim().toLowerCase();
-            const cellB = rowB.cells[columnIndex].textContent.trim().toLowerCase();
-
-            return isAscending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+            return isAscending
+                ? cellA.toString().localeCompare(cellB.toString())
+                : cellB.toString().localeCompare(cellA.toString());
         });
 
-        tbody.innerHTML = '';
-        rows.forEach(row => tbody.appendChild(row));
+        updateTable();
     }
 });
