@@ -58,5 +58,20 @@
         "Category": "Fruits",
         "Name": "Orange",
         "Price": 0.79
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Beef Jerky",
+        "Price": 3.99
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Peanut Butter Protein Bar",
+        "Price": 2.49
+    },
+    {
+        "Category": "High-Protein Snacks",
+        "Name": "Greek Yogurt",
+        "Price": 1.99
     }
 ]
