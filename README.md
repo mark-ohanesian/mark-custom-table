@@ -1,15 +1,15 @@
-### **Dynamic Table with Sorting**
+### **Mark Custom Table**
 
-This project provides a dynamic, accessible table that fetches JSON data and renders it in a Bootstrap-styled table with sorting functionality.
+This project provides a dynamic, accessible table that fetches JSON data and renders it in a Bootstrap-styled table with sorting functionality. The table can take any JSON url and allows the user to configure table headers all in one line of code on the frontend, requiring a simple line change in your divi element or other html configuration.
 
 ---
 
 ## **Features**
 
 - Built with accessibility-first methodology to **[World Wide Web Consortium (W3C) guidelines](https://www.w3.org/WAI/ARIA/apg/patterns/table/examples/sortable-table/)**
-- Fetches JSON data dynamically from a provided URL.  
-- Uses Bootstrap styling for a clean, responsive table.  
-- Provides accessible column sorting via keyboard and screen readers.  
+- Fetches JSON data dynamically from a provided URL.
+- Uses Bootstrap styling for a clean, responsive table.
+- Provides accessible column sorting via keyboard and screen readers.
 - Modular implementation for easy reuse across multiple tables.
 
 ---
