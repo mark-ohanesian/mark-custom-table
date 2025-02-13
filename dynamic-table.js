@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataContainer = document.getElementById('data-container');
     const jsonUrl = dataContainer.getAttribute('data-json-url');
     const headers = dataContainer.getAttribute('data-headers');
+    const headerNamesAttr = dataContainer.getAttribute('data-header-names');
 
     if (!jsonUrl || !headers) {
         console.error('Missing JSON URL or headers in data-container attributes.');
@@ -9,8 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // 🔹 Define `headerArray` BEFORE using it
+    // Define headerArray and headerDisplayNames
     const headerArray = headers.split(',').map(header => header.trim());
+    let headerDisplayNames = {};
+    
+    try {
+        if (headerNamesAttr) {
+            headerDisplayNames = JSON.parse(headerNamesAttr);
+        }
+    } catch (error) {
+        console.error('Error parsing data-header-names:', error);
+    }
 
     let originalData = []; // Store original unfiltered data
     let filteredData = []; // Store search-filtered data
@@ -46,9 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
         headers.forEach(headerText => {
             const th = document.createElement('th');
             const button = document.createElement('button');
-
-            button.textContent = headerText;
-            button.setAttribute('aria-label', `Sort by ${headerText}`);
+            
+            // Use custom header name if available, otherwise use original header
+            const displayName = headerDisplayNames[headerText] || headerText;
+            button.textContent = displayName;
+            button.setAttribute('aria-label', `Sort by ${displayName}`);
             button.addEventListener('click', () => sortTable(headers.indexOf(headerText)));
 
             th.appendChild(button);
