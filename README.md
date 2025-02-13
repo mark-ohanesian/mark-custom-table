@@ -1,6 +1,6 @@
 ### **Mark Custom Table**
 
-This project provides a dynamic, accessible table that fetches JSON data and renders it in a Bootstrap-styled table with sorting functionality. The table can take any JSON url and allows the user to configure table headers all in one line of code on the frontend, requiring a simple line change in your divi element or other html configuration.
+This project provides a dynamic, accessible table that fetches JSON data and renders it in a Bootstrap-styled table with sorting functionality. The table can take any JSON url and allows the user to configure table headers on the frontend, requiring a simple 3 line change in your divi element or other html configuration.
 
 ---
 
@@ -10,6 +10,9 @@ This project provides a dynamic, accessible table that fetches JSON data and ren
 - Fetches JSON data dynamically from a provided URL.
 - Uses Bootstrap styling for a clean, responsive table.
 - Provides accessible column sorting via keyboard and screen readers.
+- Pagination
+- Searching
+- Custom header names
 - Modular implementation for easy reuse across multiple tables.
 
 ---
@@ -43,6 +46,7 @@ To use the table in another project, add the following to your HTML file:
   id="data-container"
   data-json-url="https://raw.githubusercontent.com/your-username/dynamic-table/main/snacks.json"
   data-headers="Category, Name, Price"
+  data-header-names='{"Category": "Whatevs", "Name": "Snack Name", "Price": "Cost"}'
 ></div>
 <script src="dynamic-table.js"></script>
 <link rel="stylesheet" href="dynamic-table.css" />
