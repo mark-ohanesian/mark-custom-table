@@ -20,7 +20,7 @@ This project provides a dynamic, accessible table that fetches JSON data and ren
 ## **Live Demo**
 
 You can view the deployed project here:  
-👉 **[GitHub Pages URL](https://mark-ohanesian.github.io/dynamic-modular-table/)** _(Replace with actual URL after deployment.)_
+👉 **[GitHub Pages URL]([https://mark-ohanesian.github.io/dynamic-modular-table/](https://mark-ohanesian.github.io/mark-custom-table/))**
 
 ---
 
@@ -53,6 +53,7 @@ To use the table in another project, add the following to your HTML file:
 ```
 
 ---
+replace the data-json-url with your data, add a unique id for your table, and add the header names from your data into data-headers
 
 ## **Customization**
 
